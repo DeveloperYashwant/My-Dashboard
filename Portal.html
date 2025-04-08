@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Master Portal</title>
+
+  
+  <!-- Font Awesome CDN for social media icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Bulma CSS Framework -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      background-color: #f5f5f5;
+      padding: 1rem;
+      border-right: 1px solid #ddd;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    /* Project list item styles */
+    .project-list li {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: #ffffff;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .project-list li:hover {
+      background-color: #e8f0fe;
+      transform: scale(1.03);
+    }
+
+    /* Profile image styling */
+    .profile {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border: 3px solid #3273dc;
+      transition: transform 0.6s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .profile img:hover {
+      transform: rotateY(360deg);
+    }
+
+    /* Iframe area initially hidden */
+    .iframe-container {
+      display: none;
+      height: 100%;
+      perspective: 1000px;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 3rem); /* leave space for title */
+      border: none;
+      transform: rotateY(0deg);
+      transition: transform 1s ease;
+    }
+
+    /* Animation class */
+    .iframe-animate {
+      transform: rotateY(360deg);
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+      background: #121212;
+      color: #f0f0f0;
+    }
+
+    .dark-mode .sidebar {
+      background: #1e1e1e;
+      border-right-color: #444;
+    }
+
+    .dark-mode .project-list li {
+      background: #2a2a2a;
+      color: #fff;
+    }
+
+    /* Responsive layout for mobile */
+    @media (max-width: 768px) {
+      .columns {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .profile img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .project-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #ff416c, #ff4b2b, #ff9a00, #00b09b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  animation: glow 2s infinite alternate;
+  display: inline-block;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+  100% {
+    text-shadow: 2px 2px 6px rgba(255, 153, 51, 0.8);
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Layout: Two columns (Sidebar + Main area) -->
+<div class="columns is-gapless" style="height: 100vh;">
+  
+  <!-- Sidebar (Left Panel) -->
+  <div class="column is-one-quarter sidebar">
+    <!-- Profile Section -->
+    <div class="profile">
+      <img src="myprofile.jpeg" alt="Profile Thumbnail" />
+      <h5 class="title is-6 mt-2">Welcome, Yashwant 👋</h5>
+      <p class="content has-text-grey-dark is-size-7">
+        Trainer & Mentor with 6+ years of experience. Passionate about guiding learners.
+      </p>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <div class="buttons is-centered mb-3">
+      <button class="button is-small is-warning" onclick="toggleDarkMode()">🌗 Toggle Theme</button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="field">
+      <div class="control has-icons-left">
+        <input class="input is-small" type="text" placeholder="Search Projects..." onkeyup="searchProjects(this.value)">
+        <span class="icon is-small is-left">🔍</span>
+      </div>
+    </div>
+
+   
+    <!-- Project List -->
+    <h3 class="title is-5 has-text-primary mt-4">📁 My Projects</h3>
+    <ul class="project-list">
+      <li onclick="loadProject('https://fullstacktrainer.netlify.app/', 'Full Stack Trainer')">
+        1. Full Stack Trainer 
+        <span class="tag is-info is-light is-pulled-right">Template</span>
+      </li>
+      <li onclick="loadProject('https://yashtech.vercel.app/', 'Yashtech')">
+        2. Yashtech
+        <span class="tag is-success is-light is-pulled-right">Web Design</span>
+      </li>
+      <li onclick="loadProject('https://paino-sigma.vercel.app', 'Paino')">
+        3. Paino
+        <span class="tag is-warning is-light is-pulled-right">Web Design</span>
+      </li>
+      <li onclick="loadProject('https://jsexpense.vercel.app/', 'Expense')">
+        4. Expense 
+        <span class="tag is-danger is-light is-pulled-right">Web Design</span>
+      </li>
+      <li onclick="loadProject('https://myinformation-chi.vercel.app/', 'Information')">
+        5. Information 
+        <span class="tag is-link is-light is-pulled-right">Web Design</span>
+      </li>
+    </ul>
+
+    <!-- Footer Info -->
+    <footer class="has-text-centered mt-5 is-size-7">
+      📦 Total Projects: 5 | Last Updated: April 2025
+      <!-- Social Icons -->
+    <div class="buttons is-centered">
+        <a href="https://facebook.com" class="button is-small is-link is-light" target="_blank" title="Facebook">
+          <span class="icon"><i class="fab fa-facebook-f"></i></span>
+        </a>
+        <a href="https://instagram.com" class="button is-small is-danger is-light" target="_blank" title="Instagram">
+          <span class="icon"><i class="fab fa-instagram"></i></span>
+        </a>
+        <a href="https://wa.me/your-number" class="button is-small is-success is-light" target="_blank" title="WhatsApp">
+          <span class="icon"><i class="fab fa-whatsapp"></i></span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Main Content Area (Right Panel) -->
+  <div id="iframeContainer" class="column iframe-container">
+    <!-- This title updates dynamically with project name -->
+    <h2 id="projectTitle" class="title is-4 has-text-centered mt-4"></h2>
+
+    <!-- Project display area (iframe) -->
+    <iframe id="projectFrame"></iframe>
+  </div>
+</div>
+
+<!-- Modal (Popup for project info) -->
+<div class="modal" id="projectModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head has-background-primary">
+      <p class="modal-card-title has-text-white">😊 Project Opened</p>
+      <button class="delete" aria-label="close" onclick="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p id="modalText"></p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" onclick="closeModal()">OK</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Sound Effect -->
+<audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_cbe27b8e70.mp3" preload="auto"></audio>
+
+<!-- JavaScript -->
+<script>
+  // Show welcome message only on first visit
+  window.onload = () => {
+    if (!localStorage.getItem('visited')) {
+      alert("👋 Welcome to Project Master Portal, Yashwant!");
+      localStorage.setItem('visited', 'true');
+    }
+  };
+
+  // Load selected project into iframe
+  function loadProject(url, projectName) {
+    const iframe = document.getElementById('projectFrame');
+    const container = document.getElementById('iframeContainer');
+    const title = document.getElementById('projectTitle');
+    const sound = document.getElementById('clickSound');
+
+    // Reset animation
+    iframe.classList.remove("iframe-animate");
+    void iframe.offsetWidth; // trigger reflow
+    iframe.classList.add("iframe-animate");
+
+    // Show iframe and set content
+    iframe.src = url;
+    container.style.display = 'block';
+
+    // Update project title dynamically
+    title.innerHTML = `<span class="project-title">📌 ${projectName}</span>`;
+
+    // Modal popup message
+    document.getElementById('modalText').innerHTML = `
+      You opened: <strong>${projectName}</strong><br><br>
+      <a href="${url}" target="_blank">🔗 Open in New Tab</a>
+    `;
+    document.getElementById('projectModal').classList.add("is-active");
+
+    // Play click sound
+    sound.play();
+  }
+
+  // Close modal window
+  function closeModal() {
+    document.getElementById('projectModal').classList.remove("is-active");
+  }
+
+  // Toggle dark/light theme
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+  }
+
+  // Filter/search project list
+  function searchProjects(query) {
+    const items = document.querySelectorAll('.project-list li');
+    items.forEach(item => {
+      const match = item.textContent.toLowerCase().includes(query.toLowerCase());
+      item.style.display = match ? '' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
